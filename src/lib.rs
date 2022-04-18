@@ -6,7 +6,7 @@ use std::{
 };
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
-use crc::crc32;
+use crc::{Crc, CRC_32_CKSUM};
 use serde::{Deserialize, Serialize};
 
 type ByteString = Vec<u8>;
@@ -69,9 +69,9 @@ impl DumbKV {
         }
 
         debug_assert_eq!(data.len(), data_len as usize);
-        // const CHECKSUM: Crc<u32> = Crc::<u32>::new(&CRC_32_CKSUM);
-        // let checksum = CHECKSUM.checksum(&data);
-        let checksum = crc32::checksum_ieee(&data);
+        const CHECKSUM: Crc<u32> = Crc::<u32>::new(&CRC_32_CKSUM);
+        let checksum = CHECKSUM.checksum(&data);
+
         if checksum != saved_checksum {
             panic!(
                 "data corruption encountered ({:08x} != {:08x})",
@@ -102,9 +102,9 @@ impl DumbKV {
             tmp.push(*byte);
         }
 
-        // const CHECKSUM: Crc<u32> = Crc::<u32>::new(&CRC_32_CKSUM);
-        // let checksum = CHECKSUM.checksum(&tmp);
-        let checksum = crc32::checksum_ieee(&tmp);
+        const CHECKSUM: Crc<u32> = Crc::<u32>::new(&CRC_32_CKSUM);
+        let checksum = CHECKSUM.checksum(&tmp);
+        
 
         let next_byte = SeekFrom::End(0);
         let current_position = file.seek(SeekFrom::Current(0))?;

@@ -1,0 +1,1 @@
+A dumb key value store using log-structured, append-only model.

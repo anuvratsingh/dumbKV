@@ -6,14 +6,17 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+bincode = "1"
 byteorder = "1.4.3"
 crc = "2.1.0"
 serde = { version = "1.0.136", features = ["derive"] }
+serde_derive = "1.0.136"
+
 
 [lib]
 name = "libdumkv"
 path = "src/lib.rs"
 
 [[bin]]
-name = "mem"
-path = "src/mem.rs"
+name = "dumbkv"
+path = "src/dumbkv.rs"
